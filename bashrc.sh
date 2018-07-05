@@ -133,7 +133,7 @@ function __getMachineId() {
     if [ -f /etc/machine-id ]; then
         echo $((0x$(cat /etc/machine-id | head -c 15)))
     else
-        echo $(( (${#HOSTNAME}+0x$(hostid))))
+        echo $(( (${#HOSTNAME})))
     fi
 }
 
