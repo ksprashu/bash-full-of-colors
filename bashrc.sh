@@ -249,3 +249,18 @@ umask 022
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
+
+PATH="/Users/ksprashanth/Library/Python/2.7/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# path for GO
+export GOPATH=$HOME/code/go
+
+# environment variables for sshfs mounting
+export KOOTOP=kootop.c.googlers.com
+export KOOSA=koosa.c.googlers.com
+export CODEDIR=/Users/ksprashanth/mnt/code
+export REMOTEDIR=/usr/local/google/home/ksprashanth/code
