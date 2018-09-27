@@ -52,3 +52,7 @@ function allcolors() {
     done
     echo ""
 }
+
+alias python=python3
+alias pip=pip3
+alias pipenv='pipenv --three'

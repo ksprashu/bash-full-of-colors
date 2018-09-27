@@ -255,3 +255,7 @@ export NVM_DIR="/usr/local/google/home/ksprashanth/.nvm"
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 export GOPATH=$HOME/code/go
+
+export PYTHON_BIN_PATH="$(python3 -m site --user-base)/bin"
+export PATH="$PATH:$PYTHON_BIN_PATH"
+
