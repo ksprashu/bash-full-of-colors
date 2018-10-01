@@ -56,7 +56,10 @@ function allcolors() {
 # if [[ $OSTYPE == darwin* ]]; then
 #   alias pipenv='pipenv --two'
 # else
-  alias python=python3
-  alias pip=pip3
-  alias pipenv='pipenv --three'
+  # alias python=python3
+  # alias pip=pip3
+  # alias pipenv='pipenv --three'
 # fi
+alias python=python3
+alias pip=pip3
+# alias pipenv='pipenv --three'
