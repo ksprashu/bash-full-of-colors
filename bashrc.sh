@@ -1,3 +1,5 @@
+
+
 #!/usr/bin/env bash
 
 # ~/.bashrc: executed by bash(1) for non-login shells.
@@ -165,6 +167,7 @@ function __makePS1() {
     fi
 
     PS1+=":\[${BYellow}\]\w" # working directory
+    # PS1+='$(echo $(dirname \w)|sed -e "s;\(/.\)[^/]*;\1;g")/$(basename \w) $'
 
     # background jobs
     local NO_JOBS=`jobs -p | wc -w`
@@ -249,3 +252,27 @@ umask 022
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Include Drush bash customizations.
+if [ -f "/usr/local/google/home/ksprashanth/.drush/drush.bashrc" ] ; then
+  source /usr/local/google/home/ksprashanth/.drush/drush.bashrc
+fi
+
+
+# Include Drush completion.
+
+if [ -f "/usr/local/google/home/ksprashanth/.drush/drush.complete.sh" ] ; then
+  source /usr/local/google/home/ksprashanth/.drush/drush.complete.sh
+fi
+
+
+# Include Drush prompt customizations.
+
+if [ -f "/usr/local/google/home/ksprashanth/.drush/drush.prompt.sh" ] ; then
+  source /usr/local/google/home/ksprashanth/.drush/drush.prompt.sh
+fi
+
