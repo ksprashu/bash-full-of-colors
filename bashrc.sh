@@ -1,5 +1,3 @@
-
-
 #!/usr/bin/env bash
 
 # ~/.bashrc: executed by bash(1) for non-login shells.
@@ -27,7 +25,7 @@ shopt -s checkwinsize
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
+  debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 
@@ -107,36 +105,36 @@ On_IWhite='\e[0;107m'   # White
 
 if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null
 then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
+  # We have color support; assume it's compliant with Ecma-48
+  # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+  # a case would tend to support setf rather than setaf.)
+  color_prompt=yes
 else
-	color_prompt=
+  color_prompt=
 fi
 
 #HOST_COLOR=${UGreen}
 
 function __makeTerminalTitle() {
-    local title=''
+  local title=''
 
-    local CURRENT_DIR="${PWD/#$HOME/\~}"
+  local CURRENT_DIR="${PWD/#$HOME/\~}"
 
-    if [ -n "${SSH_CONNECTION}" ]; then
-        title+="`hostname`:${CURRENT_DIR} [`whoami`@`hostname -f`]"
-    else
-        title+="${CURRENT_DIR} [`whoami`]"
-    fi
+  if [ -n "${SSH_CONNECTION}" ]; then
+    title+="`hostname`:${CURRENT_DIR} [`whoami`@`hostname -f`]"
+  else
+    title+="${CURRENT_DIR} [`whoami`]"
+  fi
 
-    echo -en '\033]2;'${title}'\007'
+  echo -en '\033]2;'${title}'\007'
 }
 
 function __getMachineId() {
-    if [ -f /etc/machine-id ]; then
-        echo $((0x$(cat /etc/machine-id | head -c 15)))
-    else
-        echo $(( (${#HOSTNAME}+0x$(hostid))))
-    fi
+  if [ -f /etc/machine-id ]; then
+    echo $((0x$(cat /etc/machine-id | head -c 15)))
+  else
+    echo $(( (${#HOSTNAME})))
+  fi
 }
 
 function __makePS1() {
@@ -207,36 +205,57 @@ function __makePS1() {
             fi
             PS1+=")\[${Color_Off}\]"
         fi
+        PS1+=" \[${BGreen}\][s${SCREEN_JOBS}${current_screen}]\[${Color_Off}\]"
+      fi
+      break
     fi
+  done
 
-    # exit code
-    if [ ${EXIT} != 0 ]; then
-        PS1+=" \[${BRed}\][!${EXIT}]\[${Color_Off}\]"
+  # git branch
+  if [ -x "`which git 2>&1`" ]; then
+    local branch="$(git name-rev --name-only HEAD 2>/dev/null)"
+
+    if [ -n "${branch}" ]; then
+      local git_status="$(git status --porcelain -b 2>/dev/null)"
+      local letters="$( echo "${git_status}" | grep --regexp=' \w ' | sed -e 's/^\s\?\(\w\)\s.*$/\1/' )"
+      local untracked="$( echo "${git_status}" | grep -F '?? ' | sed -e 's/^\?\(\?\)\s.*$/\1/' )"
+      local status_line="$( echo -e "${letters}\n${untracked}" | sort | uniq | tr -d '[:space:]' )"
+      PS1+=" \[${BBlue}\](${branch}"
+      if [ -n "${status_line}" ]; then
+        PS1+=" ${status_line}"
+      fi
+      PS1+=")\[${Color_Off}\]"
     fi
+  fi
 
-    PS1+=" \[${BPurple}\]\\$\[${Color_Off}\] " # prompt
+  # exit code
+  if [ ${EXIT} != 0 ]; then
+    PS1+=" \[${BRed}\][!${EXIT}]\[${Color_Off}\]"
+  fi
 
-    __makeTerminalTitle
+  PS1+=" \[${BPurple}\]\\$\[${Color_Off}\] " # prompt
+
+  __makeTerminalTitle
 }
 
 if [ "$color_prompt" = yes ]; then
-    PROMPT_COMMAND=__makePS1
-    PS2="\[${BPurple}\]>\[${Color_Off}\] " # continuation prompt
+  PROMPT_COMMAND=__makePS1
+  PS2="\[${BPurple}\]>\[${Color_Off}\] " # continuation prompt
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+  PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 
 unset color_prompt force_color_prompt
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias dir='dir --color=auto'
-    alias vdir='vdir --color=auto'
+  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+  alias dir='dir --color=auto'
+  alias vdir='vdir --color=auto'
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
 fi
 
 # Alias definitions.
@@ -244,13 +263,13 @@ fi
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+  . ~/.bash_aliases
 fi
 
 umask 022
 
 if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
+  PATH="$HOME/bin:$PATH"
 fi
 
 export NVM_DIR="$HOME/.nvm"
@@ -262,17 +281,29 @@ if [ -f "/usr/local/google/home/ksprashanth/.drush/drush.bashrc" ] ; then
   source /usr/local/google/home/ksprashanth/.drush/drush.bashrc
 fi
 
-
 # Include Drush completion.
-
 if [ -f "/usr/local/google/home/ksprashanth/.drush/drush.complete.sh" ] ; then
   source /usr/local/google/home/ksprashanth/.drush/drush.complete.sh
 fi
 
-
 # Include Drush prompt customizations.
-
 if [ -f "/usr/local/google/home/ksprashanth/.drush/drush.prompt.sh" ] ; then
   source /usr/local/google/home/ksprashanth/.drush/drush.prompt.sh
 fi
 
+# do this only if running MacOS
+if [[ $OSTYPE == darwin* ]]; then
+  PATH="/Users/ksprashanth/Library/Python/2.7/bin:$PATH"
+
+# environment variables for sshfs mounting
+  export KOOTOP=kootop.c.googlers.com
+  export KOOSA=koosa.c.googlers.com
+  export CODEDIR=/Users/ksprashanth/mnt/code
+  export REMOTEDIR=/usr/local/google/home/ksprashanth/code
+fi
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+export GOPATH=$HOME/code/go
+
+export PYTHON_BIN_PATH="$(python -m site --user-base)/bin"
+export PATH="$PATH:$PYTHON_BIN_PATH"
