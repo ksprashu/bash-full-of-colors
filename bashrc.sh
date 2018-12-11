@@ -190,27 +190,6 @@ function __makePS1() {
         fi
     done
 
-    # git branch
-    if [ -x "`which git 2>&1`" ]; then
-        local branch="$(git name-rev --name-only HEAD 2>/dev/null)"
-
-        if [ -n "${branch}" ]; then
-            local git_status="$(git status --porcelain -b 2>/dev/null)"
-            local letters="$( echo "${git_status}" | grep --regexp=' \w ' | sed -e 's/^\s\?\(\w\)\s.*$/\1/' )"
-            local untracked="$( echo "${git_status}" | grep -F '?? ' | sed -e 's/^\?\(\?\)\s.*$/\1/' )"
-            local status_line="$( echo -e "${letters}\n${untracked}" | sort | uniq | tr -d '[:space:]' )"
-            PS1+=" \[${BBlue}\](${branch}"
-            if [ -n "${status_line}" ]; then
-                PS1+=" ${status_line}"
-            fi
-            PS1+=")\[${Color_Off}\]"
-        fi
-        PS1+=" \[${BGreen}\][s${SCREEN_JOBS}${current_screen}]\[${Color_Off}\]"
-      fi
-      break
-    fi
-  done
-
   # git branch
   if [ -x "`which git 2>&1`" ]; then
     local branch="$(git name-rev --name-only HEAD 2>/dev/null)"
