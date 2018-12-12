@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-export __LS_OPTIONS='-h'
+if [[ $OSTYPE == darwin* ]]; then
+  export __LS_OPTIONS='-h -G'
+else
+  export __LS_OPTIONS='-h --color'
+fi
 
 alias sshfs='sshfs -o follow_symlinks -o auto_cache -o reconnect'
 alias ls='ls $__LS_OPTIONS'
