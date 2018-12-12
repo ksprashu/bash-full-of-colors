@@ -7,6 +7,7 @@ else
 fi
 
 alias sshfs='sshfs -o follow_symlinks -o auto_cache -o reconnect'
+
 alias ls='ls $__LS_OPTIONS'
 alias ll='ls $__LS_OPTIONS -l'
 alias la='ls $__LS_OPTIONS -la'
