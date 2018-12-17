@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export __LS_OPTIONS='-h'
+export __LS_OPTIONS='-h --color=auto'
 
 alias ls='ls $__LS_OPTIONS'
 alias ll='ls $__LS_OPTIONS -l'
