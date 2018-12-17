@@ -138,56 +138,57 @@ function __getMachineId() {
 }
 
 function __makePS1() {
-  local EXIT="$?"
+    local EXIT="$?"
 
-  if [ ! -n "${HOST_COLOR}" ]; then
-    local H=$(__getMachineId)
-    HOST_COLOR=$(tput setaf $((H%5 + 2))) # foreground
-    #HOST_COLOR="\e[4$((H%5 + 2))m" # background
-  fi
-
-  PS1=''
-
-  PS1+="${debian_chroot:+($debian_chroot)}"
-
-  if [ ${USER} == root ]; then
-    PS1+="\[${Red}\]" # root
-  elif [ ${USER} != ${LOGNAME} ]; then
-    PS1+="\[${Blue}\]" # normal user
-  else
-    PS1+="\[${Green}\]" # normal user
-  fi
-  PS1+="\u\[${Color_Off}\]"
-
-  if [ -n "${SSH_CONNECTION}" ]; then
-    PS1+="\[${BWhite}\]@"
-    PS1+="\[${UWhite}${HOST_COLOR}\]\h\[${Color_Off}\]" # host displayed only if ssh connection
-  fi
-
-  PS1+=":\[${BYellow}\]\w" # working directory
-
-  # background jobs
-  local NO_JOBS=`jobs -p | wc -w`
-  if [ ${NO_JOBS} != 0 ]; then
-    PS1+=" \[${BGreen}\][j${NO_JOBS}]\[${Color_Off}\]"
-  fi
-
-  # screen sessions
-  local SCREEN_PATHS="/var/run/screens/S-`whoami` /var/run/screen/S-`whoami` /var/run/uscreens/S-`whoami`"
-
-  for screen_path in ${SCREEN_PATHS}; do
-    if [ -d ${screen_path} ]; then
-      SCREEN_JOBS=`ls ${screen_path} | wc -w`
-      if [ ${SCREEN_JOBS} != 0 ]; then
-        local current_screen="$(echo ${STY} | cut -d '.' -f 1)"
-        if [ -n "${current_screen}" ]; then
-          current_screen=":${current_screen}"
-        fi
-        PS1+=" \[${BGreen}\][s${SCREEN_JOBS}${current_screen}]\[${Color_Off}\]"
-      fi
-      break
+    if [ ! -n "${HOST_COLOR}" ]; then
+        local H=$(__getMachineId)
+        HOST_COLOR=$(tput setaf $((H%5 + 2))) # foreground
+        #HOST_COLOR="\e[4$((H%5 + 2))m" # background
     fi
-  done
+
+    PS1=''
+
+    PS1+="${debian_chroot:+($debian_chroot)}"
+
+    if [ ${USER} == root ]; then
+        PS1+="\[${Red}\]" # root
+    elif [ ${USER} != ${LOGNAME} ]; then
+        PS1+="\[${Blue}\]" # normal user
+    else
+        PS1+="\[${Green}\]" # normal user
+    fi
+    PS1+="\u\[${Color_Off}\]"
+
+    if [ -n "${SSH_CONNECTION}" ]; then
+        PS1+="\[${BWhite}\]@"
+        PS1+="\[${UWhite}${HOST_COLOR}\]\h\[${Color_Off}\]" # host displayed only if ssh connection
+    fi
+
+    PS1+=":\[${BYellow}\]\w" # working directory
+    # PS1+='$(echo $(dirname \w)|sed -e "s;\(/.\)[^/]*;\1;g")/$(basename \w) $'
+
+    # background jobs
+    local NO_JOBS=`jobs -p | wc -w`
+    if [ ${NO_JOBS} != 0 ]; then
+        PS1+=" \[${BGreen}\][j${NO_JOBS}]\[${Color_Off}\]"
+    fi
+
+    # screen sessions
+    local SCREEN_PATHS="/var/run/screens/S-`whoami` /var/run/screen/S-`whoami` /var/run/uscreens/S-`whoami`"
+
+    for screen_path in ${SCREEN_PATHS}; do
+        if [ -d ${screen_path} ]; then
+            SCREEN_JOBS=`ls ${screen_path} | wc -w`
+            if [ ${SCREEN_JOBS} != 0 ]; then
+                local current_screen="$(echo ${STY} | cut -d '.' -f 1)"
+                if [ -n "${current_screen}" ]; then
+                    current_screen=":${current_screen}"
+                fi
+                PS1+=" \[${BGreen}\][s${SCREEN_JOBS}${current_screen}]\[${Color_Off}\]"
+            fi
+            break
+        fi
+    done
 
   # git branch
   if [ -x "`which git 2>&1`" ]; then
@@ -253,6 +254,21 @@ fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Include Drush bash customizations.
+if [ -f "/usr/local/google/home/ksprashanth/.drush/drush.bashrc" ] ; then
+  source /usr/local/google/home/ksprashanth/.drush/drush.bashrc
+fi
+
+# Include Drush completion.
+if [ -f "/usr/local/google/home/ksprashanth/.drush/drush.complete.sh" ] ; then
+  source /usr/local/google/home/ksprashanth/.drush/drush.complete.sh
+fi
+
+# Include Drush prompt customizations.
+if [ -f "/usr/local/google/home/ksprashanth/.drush/drush.prompt.sh" ] ; then
+  source /usr/local/google/home/ksprashanth/.drush/drush.prompt.sh
+fi
 
 # do this only if running MacOS
 if [[ $OSTYPE == darwin* ]]; then
