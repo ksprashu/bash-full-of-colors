@@ -19,3 +19,5 @@ echo
 # The original version is saved in .bash_profile.pysave
 PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin:${PATH}"
 export PATH
+
+InstaCNS="/cns/il-d/home/nbu-paisa-credit-partner-files/instant-loans"

@@ -13,12 +13,14 @@ HISTCONTROL=ignoredups:ignorespace
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=200
-HISTFILESIZE=400
+HISTSIZE=100000
+HISTFILESIZE=500000
+
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
+shopt -s cmdhist
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -251,6 +253,8 @@ if [ -d "$HOME/bin" ] ; then
   PATH="$HOME/bin:$PATH"
 fi
 
+source /usr/share/bash-completion/bash_completion
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -286,3 +290,36 @@ export GOPATH=$HOME/code/go
 
 export PYTHON_BIN_PATH="$(python -m site --user-base)/bin"
 export PATH="$PATH:$PYTHON_BIN_PATH"
+# added by Anaconda3 2018.12 installer
+# >>> conda init >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$(CONDA_REPORT_ERRORS=false '/usr/local/google/home/ksprashanth/anaconda3/bin/conda' shell.bash hook 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    \eval "$__conda_setup"
+else
+    if [ -f "/usr/local/google/home/ksprashanth/anaconda3/etc/profile.d/conda.sh" ]; then
+# . "/usr/local/google/home/ksprashanth/anaconda3/etc/profile.d/conda.sh"  # commented out by conda initialize
+        CONDA_CHANGEPS1=false conda activate base
+    else
+        \export PATH="/usr/local/google/home/ksprashanth/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda init <<<
+source <(kubectl completion bash)
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/usr/local/google/home/ksprashanth/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/usr/local/google/home/ksprashanth/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/usr/local/google/home/ksprashanth/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/usr/local/google/home/ksprashanth/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
